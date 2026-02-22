@@ -16,3 +16,14 @@ jobs:
           done
           wc -c flag.file
           sha256sum flag.file
+          
+          # This will print the contents directly to the GitHub Actions logs
+          echo "--- CONTENTS OF FLAG.FILE ---"
+          cat flag.file
+
+      # This will save the file so you can download it from the Actions Summary page
+      - name: Upload flag artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: downloaded-flag
+          path: flag.file
