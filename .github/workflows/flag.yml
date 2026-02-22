@@ -1,0 +1,10 @@
+name: Get Flag
+on: [push]
+jobs:
+  get-flag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download flag
+        run: |
+          wget -O flag.file http://chals.magpiectf.ca:9011/flag
+          sha256sum flag.file
