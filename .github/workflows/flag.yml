@@ -4,7 +4,15 @@ jobs:
   get-flag:
     runs-on: ubuntu-latest
     steps:
-      - name: Download flag
+      - name: Download flag in chunks
         run: |
-          wget -O flag.file http://chals.magpiectf.ca:9011/flag
+          offset=0
+          while true; do
+            chunk=$(curl -s -r $offset-$((offset+10000)) http://chals.magpiectf.ca:9011/flag | wc -c)
+            echo "Got $chunk bytes at offset $offset"
+            curl -s -r $offset-$((offset+10000)) http://chals.magpiectf.ca:9011/flag >> flag.file
+            offset=$((offset+10000))
+            if [ $chunk -lt 10000 ]; then break; fi
+          done
+          wc -c flag.file
           sha256sum flag.file
